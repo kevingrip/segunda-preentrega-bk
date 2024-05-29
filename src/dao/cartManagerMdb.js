@@ -61,7 +61,7 @@ class CartCollectionManager {
     getCartById = async (id) => {
         try {
             console.log(await cartModel.findOne({ cartId: id }));
-            return await cartModel.findOne({ cartId: id });
+            return await cartModel.findOne({ cartId: id }).populate({path:'list.idProduct',model: productModel});
         } catch (err) {
             return err.message;
         };
@@ -83,14 +83,30 @@ class CartCollectionManager {
         };
     };
 
-    deleteAllCart = async () => {
+    deleteAllCart = async (cart) => {
         try {
-            await cartModel.deleteMany({});
-            return "Carrito Vacio"
+            await cartModel.findOneAndUpdate(
+                { cartId: cart },
+                { list: [] } 
+              );
         } catch (err) {
             return err.message;
         };
     };
-}
+
+    deleteProdByCart = async (cart,product) =>{
+        try{
+            await cartModel.updateOne(
+                { cartId: cart },
+                { $pull: { list: { idProduct: product } } }
+              );
+        } catch (err) {
+            return err.message;
+        }
+    }
+
+
+
+}    
 
 export default CartCollectionManager;

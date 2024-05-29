@@ -4,16 +4,31 @@ class ProductCollectionManager {
     constructor() {
     }
 
-    getAllProductsDB = async (limit) => {
+    getAllProductsDB = async (pageNum, limit, sort) => {
         try {
-            const products = await productModel.find().lean()
+            const options = {
+                page: pageNum || 1,
+                limit: limit || 10,
+                sort: { price: sort },
+                lean: true // Convierte los documentos en objetos JavaScript simples
+            };
+            const products = await productModel.paginate({}, options)
             console.log(products)
-            return limit === 0 ? products : products.slice(0,limit);
-            //corregir limit
+            return products
         } catch (err) {
             return err.message;
         };
     };
+
+    // getAllProductsDB = async () => {
+    //     try {
+    //         const products = await productModel.find().lean()
+    //         return products
+    //     } catch (err) {
+    //         return err.message;
+    //     };
+    // };
+
 
     addProductDB = async (title,description,price,thumbnail,code,stock) => {
         try {

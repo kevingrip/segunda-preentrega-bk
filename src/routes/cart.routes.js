@@ -58,10 +58,17 @@ cartRoutes.delete('/', async(req,res)=>{
     res.status(200).send({ status:3, payload: cartDelete });
 } )
 
-cartRoutes.delete('/:cid', async(req,res)=>{
+cartRoutes.delete('/:cid/product', async(req,res)=>{
     const cartId = req.params.cid;
-    const cartDeleteById = await dbCartManager.deleteCartById(cartId);
+    const cartDeleteById = await dbCartManager.deleteAllCart(cartId);
     res.status(200).send({ status:3, payload: cartDeleteById });
+} )
+
+cartRoutes.delete('/:cid/product/:pid', async(req,res)=>{
+    const cartId = req.params.cid;
+    const prodId = req.params.pid;
+    const prodDeleteByCart = await dbCartManager.deleteProdByCart(cartId,prodId);
+    res.status(200).send({ status:3, payload: prodDeleteByCart });
 } )
 
 export default cartRoutes;
