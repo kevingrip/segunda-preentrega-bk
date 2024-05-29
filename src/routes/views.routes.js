@@ -17,7 +17,7 @@ viewsRouter.get('/bienvenida', (req,res)=>{
 
 viewsRouter.get('/realtimeproducts',async (req,res)=>{
     const products = await dbManager.getAllProductsDB()
-    const productConIdStrings = products.map(item => {
+    const productConIdStrings = products.docs.map(item => {
         return {
             ...item,
             _id: item._id.toString()

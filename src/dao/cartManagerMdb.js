@@ -67,23 +67,23 @@ class CartCollectionManager {
         };
     };
 
-    update = async (id, updProd) => {
+    updateQuantity = async (idCart, idProd, qty) => {
         try {
+            await cartModel.updateOne(
+                { "cartId": idCart, "list.idProduct": idProd },
+                { $set: { "list.$.quantity": qty } }
+            );
+            const resultCart = await cartModel.findOne({ cartId: idCart })
+            const resultCartProduct = resultCart.list.filter(list => list.idProduct === idProd)
+            return resultCartProduct;
+
         } catch (err) {
             return err.message;
         };
     };
 
-    deleteCartById = async (idDelete) => {
-        try {
-            await cartModel.deleteOne({cartId:idDelete});
-            return (`Carrido eliminado id: `,idDelete)
-        } catch (err) {
-            return err.message;
-        };
-    };
 
-    deleteAllCart = async (cart) => {
+    deleteProductsFromCart = async (cart) => {
         try {
             await cartModel.findOneAndUpdate(
                 { cartId: cart },

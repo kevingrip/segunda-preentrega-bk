@@ -1,20 +1,5 @@
 <div style="margin: 20px;">
     <h1>Listado de Productos RealTime</h1>
-    {{!-- <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-        {{#each products}}
-            <div id="productCard{{id}}" class="card" style="width: 18rem;">
-                <img src="{{thumbnail}}" class="card-img-top" style=" height:10rem" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{title}}</h5>
-                    <p class="card-text">{{description}}</p>
-                    <p>${{price}}</p>
-                    <p>Stock: {{stock}}</p>
-                    <p>id:{{id}}</p>
-                    <button class="btn btn-danger delete-btn" productId="{{id}}">Borrar</button>
-                </div>
-            </div>
-        {{/each}}
-    </div> --}}
     
     <ul id="productsList" class="list-group" method="delete" enctype="multipart/form-data">
         {{#each productConIdStrings}}

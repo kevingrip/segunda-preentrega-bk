@@ -4,8 +4,8 @@ import CartCollectionManager from "../dao/cartManagerMdb.js";
 
 const cartRoutes = Router();
 
-const cartJson = './src/carts.json'
-const cManager = new CartManager(cartJson);
+// const cartJson = './src/carts.json'
+// const cManager = new CartManager(cartJson);
 
 const dbCartManager = new CartCollectionManager()
 
@@ -35,16 +35,6 @@ cartRoutes.post('/', async(req,res) => {
 })
 
 cartRoutes.post('/:cid/product/:pid', async(req,res) => {
-    // console.log(req.body);
-
-    // const cartId = parseInt(req.params.cid);
-    // const prodId = parseInt(req.params.pid);
-    // if ((prodId <= 0 || isNaN(prodId))||(cartId <= 0 || isNaN(cartId))) {
-    //     res.status(400).send({ status: 0, payload: [], error: 'Se requiere id numérico mayor a 0' });
-    // }else{
-    //     const addProd = await cManager.addProductCart(cartId,prodId);
-    //     res.status(200).send({ status:4, payload: addProd });
-    // }
 
     const cartId = req.params.cid;
     const prodId = req.params.pid;
@@ -53,14 +43,17 @@ cartRoutes.post('/:cid/product/:pid', async(req,res) => {
     res.status(200).send({ status:4, payload: addProd });
 })
 
-cartRoutes.delete('/', async(req,res)=>{
-    const cartDelete = await dbCartManager.deleteAllCart();
-    res.status(200).send({ status:3, payload: cartDelete });
+cartRoutes.put('/:cid/product/:pid/:quantity', async(req,res)=>{
+    const cartId = req.params.cid
+    const prodId = req.params.pid;
+    const quantity = req.params.quantity;
+    const productCartUpdate = await dbCartManager.updateQuantity(cartId,prodId,quantity)
+    res.status(200).send({ status:3, payload: productCartUpdate });
 } )
 
 cartRoutes.delete('/:cid/product', async(req,res)=>{
     const cartId = req.params.cid;
-    const cartDeleteById = await dbCartManager.deleteAllCart(cartId);
+    const cartDeleteById = await dbCartManager.deleteProductsFromCart(cartId);
     res.status(200).send({ status:3, payload: cartDeleteById });
 } )
 

@@ -26,7 +26,7 @@ const dbManager = new ProductCollectionManager();
 productRoutes.get('/',async (req,res)=>{
     const page = req.query.page
     const limit = req.query.limit
-    const sort =  parseInt(req.query.sort) || -1
+    const sort =  parseInt(req.query.sort)
     const category = req.query.query
     const productsFromDb = await dbManager.getAllProductsDB(page,limit,sort)
     res.status(200).send({ status: 1, payload: productsFromDb})

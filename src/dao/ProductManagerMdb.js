@@ -9,7 +9,7 @@ class ProductCollectionManager {
             const options = {
                 page: pageNum || 1,
                 limit: limit || 10,
-                sort: { price: sort },
+                sort: { price: sort || 1 },
                 lean: true // Convierte los documentos en objetos JavaScript simples
             };
             const products = await productModel.paginate({}, options)
