@@ -16,14 +16,13 @@ viewsRouter.get('/bienvenida', (req,res)=>{
 
 
 viewsRouter.get('/realtimeproducts',async (req,res)=>{
-    const products = await dbManager.getAllProductsDB()
-    const productConIdStrings = products.docs.map(item => {
-        return {
-            ...item,
-            _id: item._id.toString()
-        };
-    });
-    res.render('realTimeProducts', {productConIdStrings})
+    const pageNum = req.query.page || 1;
+    const limit = req.query.limit || 3;
+    const sort = parseInt(req.query.sort) || 1;
+    const productsData = await dbManager.getAllProductsDB(pageNum,limit,sort);
+
+
+    res.render('realTimeProducts', {productsData: productsData});
 })
 
 viewsRouter.post('/realtimeproducts',async (req,res)=>{

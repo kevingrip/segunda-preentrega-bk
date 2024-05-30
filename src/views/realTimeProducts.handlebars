@@ -2,16 +2,30 @@
     <h1>Listado de Productos RealTime</h1>
     
     <ul id="productsList" class="list-group" method="delete" enctype="multipart/form-data">
-        {{#each productConIdStrings}}
+        {{#each productsData.docs}}
         <li style="margin-bottom: 40px;">
             <img src="{{thumbnail}}" style="width: 10rem; height:100px;" alt="">
             <h4>{{title}}</h4>
             <p>{{description}}</p>
-            <p>$ {{price}}</p>            
-            <button type="button" class="btn btn-danger" style="width: 5rem; height: 2rem;" onclick="handleDeleteButtonClick('{{_id}}')">Delete</button>
+            <p>$ {{price}}</p>
+            <button type="button" class="btn btn-success" style="width: 10rem; height: 2rem;">Agregar al carrito</button>            
+            <button type="button" class="btn btn-danger" style="width: 10rem; height: 2rem;" onclick="handleDeleteButtonClick('{{_id}}')">Eliminar</button>
         </li>
         {{/each}}
     </ul>
+
+    <div class="pagination" >
+        {{#if productsData.hasPrevPage}}
+            <a href={{productsData.prevLink}}>Anterior__</a>
+        {{/if}}
+
+        <p>{{productsData.page}} de {{productsData.totalPages}}</p>
+
+        {{#if productsData.hasNextPage}}
+            <a href={{productsData.nextLink}}>__Siguiente</a>
+        {{/if}}
+    </div>
+    
 </div>
 
 <div class="mt-3">
@@ -33,6 +47,9 @@
         <button type="submit" class="btn btn-success" style="margin: 10px;">Cargar</button>
     </form>
 </div>
+
+
+
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
 <script>
@@ -56,6 +73,8 @@
         }
     });
 
+    
+
     const handleDeleteButtonClick = async (productId) => {
         console.log('Se hizo clic en el botón "delete" del producto con ID:', productId);
         console.log(`/api/product/${productId}`)
@@ -68,8 +87,8 @@
         } else {
             console.error("Error al enviar el formulario");
         }
-
     }
+
 
     socketClient.on('newProduct', data =>{
         window.location.reload();

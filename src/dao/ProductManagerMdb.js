@@ -8,12 +8,14 @@ class ProductCollectionManager {
         try {
             const options = {
                 page: pageNum || 1,
-                limit: limit || 10,
+                limit: limit || 1,
                 sort: { price: sort || 1 },
-                lean: true // Convierte los documentos en objetos JavaScript simples
+                lean: true // Sirve para convertir los documentos en objetos JavaScript simples
             };
             const products = await productModel.paginate({}, options)
             console.log(products)
+            products.prevLink = products.page > 1 ? `realTimeProducts?page=${products.page - 1}` : null;
+            products.nextLink = products.page < products.totalPages ? `realTimeProducts?page=${products.page + 1}` : null;
             return products
         } catch (err) {
             return err.message;
