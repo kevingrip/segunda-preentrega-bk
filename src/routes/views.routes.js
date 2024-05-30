@@ -18,8 +18,9 @@ viewsRouter.get('/bienvenida', (req,res)=>{
 viewsRouter.get('/realtimeproducts',async (req,res)=>{
     const pageNum = req.query.page || 1;
     const limit = req.query.limit || 3;
-    const sort = parseInt(req.query.sort) || 1;
-    const productsData = await dbManager.getAllProductsDB(pageNum,limit,sort);
+    const category = req.query.query;
+    const sort = req.query.sort;
+    const productsData = await dbManager.getAllProductsDB(pageNum,limit,sort,category);
 
 
     res.render('realTimeProducts', {productsData: productsData});

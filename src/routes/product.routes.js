@@ -26,9 +26,9 @@ const dbManager = new ProductCollectionManager();
 productRoutes.get('/',async (req,res)=>{
     const page = req.query.page
     const limit = req.query.limit
-    const sort =  parseInt(req.query.sort)
+    const sort =  req.query.sort
     const category = req.query.query
-    const productsFromDb = await dbManager.getAllProductsDB(page,limit,sort)
+    const productsFromDb = await dbManager.getAllProductsDB(page,limit,sort,category)
     res.status(200).send({ status: 1, payload: productsFromDb})
 })
 
@@ -48,6 +48,7 @@ productRoutes.post('/', uploader.single('thumbnail'), async(req,res) => {
     console.log(req.body);
     const title = req.body.title;
     const description = req.body.description;
+    const category = req.body.category;
     const price = parseInt(req.body.price);
     const thumbnail = `/static/img/${req.file.originalname}`
     const code = req.body.code;
@@ -55,7 +56,7 @@ productRoutes.post('/', uploader.single('thumbnail'), async(req,res) => {
 
     // console.log(`${config.DIRNAME}public/img/${req.file.originalname}`)
 
-    await dbManager.addProductDB(title, description, price, thumbnail,code,stock);
+    await dbManager.addProductDB(title, description, price, thumbnail,code,stock,category);
     res.status(200).send({ status:3, payload: req.body });
     socketServer.emit('newProduct', "Producto agregado");
         

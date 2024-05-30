@@ -89,6 +89,7 @@ class CartCollectionManager {
                 { cartId: cart },
                 { list: [] } 
               );
+            return "Carrito vaciado correctamente"
         } catch (err) {
             return err.message;
         };
@@ -100,6 +101,7 @@ class CartCollectionManager {
                 { cartId: cart },
                 { $pull: { list: { idProduct: product } } }
               );
+            return "Producto borrado del carrito correctamente"
         } catch (err) {
             return err.message;
         }

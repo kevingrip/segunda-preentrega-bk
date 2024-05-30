@@ -8,7 +8,7 @@
             <h4>{{title}}</h4>
             <p>{{description}}</p>
             <p>$ {{price}}</p>
-            <button type="button" class="btn btn-success" style="width: 10rem; height: 2rem;">Agregar al carrito</button>            
+            <button id="addProductCart" type="button" class="btn btn-success" style="width: 10rem; height: 2rem;" onclick="addToCart('{{_id}}','6656ba460c12bcb315c5ea5d')">Agregar al carrito</button>            
             <button type="button" class="btn btn-danger" style="width: 10rem; height: 2rem;" onclick="handleDeleteButtonClick('{{_id}}')">Eliminar</button>
         </li>
         {{/each}}
@@ -34,6 +34,7 @@
     <form id="newProduct" method="post" enctype="multipart/form-data">
         <input class="form-control" type="text" id="title" name="title" placeholder="Titulo" style="width: 300px;"><br />
         <input class="form-control" type="text" id="description" name="description" placeholder="description" style="width: 300px;"><br />
+        <input class="form-control" type="text" id="category" name="category" placeholder="category" style="width: 300px;"><br />
         <input class="form-control" type="number" id="price" name="price" placeholder="price" style="width: 300px;"><br />
         <input class="form-control" type="file" id="originalname" name="thumbnail" placeholder="thumbnail" style="width: 300px;"><br />
         <input class="form-control" type="text" id="code" name="code" placeholder="code" style="width: 300px;"><br />
@@ -84,6 +85,18 @@
 
         if (response.ok) {
             socketClient.emit("productsList", "Producto Borrado");
+        } else {
+            console.error("Error al enviar el formulario");
+        }
+    }
+
+    const addToCart = async (product,cart) =>{
+        const res = await fetch(`/api/cart/${cart}/product/${product}`, {
+            method: "POST"
+        });
+
+        if (res.ok) {
+            console.log("Producto agregado al carrito");
         } else {
             console.error("Error al enviar el formulario");
         }

@@ -4,15 +4,26 @@ class ProductCollectionManager {
     constructor() {
     }
 
-    getAllProductsDB = async (pageNum, limit, sort) => {
+    getAllProductsDB = async (pageNum, limit, sort, category) => {
         try {
             const options = {
                 page: pageNum || 1,
-                limit: limit || 1,
-                sort: { price: sort || 1 },
+                limit: limit || 10,
                 lean: true // Sirve para convertir los documentos en objetos JavaScript simples
             };
-            const products = await productModel.paginate({}, options)
+
+            if (sort === 'asc'){
+                sort=parseInt(1)
+                options.sort = { price: sort } 
+            } else if (sort === 'desc'){
+                sort=parseInt(-1)
+                options.sort = { price: sort }
+            } else{
+                sort=null
+            }
+
+            
+            const products = await productModel.paginate( category ? {category:category} : {}, options)
             console.log(products)
             products.prevLink = products.page > 1 ? `realTimeProducts?page=${products.page - 1}` : null;
             products.nextLink = products.page < products.totalPages ? `realTimeProducts?page=${products.page + 1}` : null;
@@ -32,14 +43,14 @@ class ProductCollectionManager {
     // };
 
 
-    addProductDB = async (title,description,price,thumbnail,code,stock) => {
+    addProductDB = async (title,description,price,thumbnail,code,stock,category) => {
         try {
 
             const product = {
-                title,description,price,thumbnail,code,stock
+                title,description,price,thumbnail,code,stock,category
             }
     
-            if (title && description && price && thumbnail && code && stock){
+            if (title && description && price && thumbnail && code && stock && category){
     
                 product.status = true;
 

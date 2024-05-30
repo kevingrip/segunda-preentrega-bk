@@ -51,7 +51,7 @@ cartRoutes.put('/:cid/product/:pid/:quantity', async(req,res)=>{
     res.status(200).send({ status:3, payload: productCartUpdate });
 } )
 
-cartRoutes.delete('/:cid/product', async(req,res)=>{
+cartRoutes.delete('/:cid', async(req,res)=>{
     const cartId = req.params.cid;
     const cartDeleteById = await dbCartManager.deleteProductsFromCart(cartId);
     res.status(200).send({ status:3, payload: cartDeleteById });
